@@ -12,9 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use App\Controller\BookingsByUser;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BookingRepository::class)]
-#[ApiResource(operations: [
+#[ApiResource(
+    operations: [
     new GetCollection(),
     new Get(),
     new Post(
@@ -33,8 +35,10 @@ use App\Controller\BookingsByUser;
         uriTemplate: '/users/{id}/bookings',
         controller: BookingsByUser::class,
         name: 'get_by_user'
-    ),
-])]
+    )],
+
+    normalizationContext: ['groups' => ['booking:read']],
+)]
 
 class Booking
 {
@@ -45,15 +49,19 @@ class Booking
 
     #[ORM\ManyToOne(inversedBy: 'bookings')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["booking:read"])]
     private ?User $user = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["booking:read"])]
     private ?string $status = null;
 
     #[ORM\Column]
+    #[Groups(["booking:read"])]
     private array $timePeriod = [];
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(["booking:read"])]
     private ?\DateTimeInterface $date = null;
 
     public function getId(): ?int
