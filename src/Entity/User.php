@@ -9,7 +9,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
-use App\Controller\SecurityController;
+use App\Controller\ResetPasswordController;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,8 +25,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
     new Post(),
     new Put(),
     new Post(
-        uriTemplate: '/login',
-        controller: SecurityController::class
+        uriTemplate: '/resetPassword',
+        controller: ResetPasswordController::class
     )
 ])]
 

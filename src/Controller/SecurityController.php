@@ -40,6 +40,10 @@ class SecurityController extends AbstractController
             'email' => $user->getUserIdentifier(),
             'token' => $this->jwtManager->create($user),
             'nom' => $user->getNom(),
+            'prenom' => $user->getPrenom(),
+            'role' => $user->getRole(),
+            'service' => $user->getService(),
+            'id' => $user->getId(),
 
         ]);
     }
