@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
+use ApiPlatform\Exception\InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -33,7 +33,7 @@ class ResetPasswordController extends AbstractController
         $user = $this->getUser();
 
         if (!$this->passwordEncoder->isPasswordValid($user, $oldPassword)) {
-            throw new AuthenticationException('Invalid old password');
+            throw new InvalidArgumentException("Invalid old password");
         }
 
         // At this point, the old password is valid. So we'll encode and set the new password
