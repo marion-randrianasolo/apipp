@@ -9,10 +9,13 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\ForgotPasswordController;
+use App\Controller\ResetForgottenPasswordController;
 use App\Controller\ResetPasswordController;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -28,6 +31,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
     new Post(
         uriTemplate: '/resetPassword',
         controller: ResetPasswordController::class
+    ),
+    new Post(
+        uriTemplate: '/forgotPassword',
+        controller: ForgotPasswordController::class
+    ),
+    new Post(
+        uriTemplate: '/resetForgottenPassword',
+        controller: ResetForgottenPasswordController::class
     )
 ])]
 
@@ -62,6 +73,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(["booking:read"])]
     #[ORM\Column(length: 255)]
     private ?string $service = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $resetPasswordToken = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $resetPasswordTokenExpiration = null;
 
     public function __construct()
     {
@@ -198,5 +215,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
+    }
+
+    public function getResetPasswordToken(): ?string
+    {
+        return $this->resetPasswordToken;
+    }
+
+    public function setResetPasswordToken(?string $resetPasswordToken): static
+    {
+        $this->resetPasswordToken = $resetPasswordToken;
+
+        return $this;
+    }
+
+    public function getResetPasswordTokenExpiration(): ?\DateTimeInterface
+    {
+        return $this->resetPasswordTokenExpiration;
+    }
+
+    public function setResetPasswordTokenExpiration(?\DateTimeInterface $resetPasswordTokenExpiration): static
+    {
+        $this->resetPasswordTokenExpiration = $resetPasswordTokenExpiration;
+
+        return $this;
     }
 }
