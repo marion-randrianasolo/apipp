@@ -23,11 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(operations: [
-    new GetCollection(),
     new Get(uriTemplate: '/users/{id}'),
-    new Delete(),
-    new Post(),
-    new Put(),
     new Post(
         uriTemplate: '/resetPassword',
         controller: ResetPasswordController::class
