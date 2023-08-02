@@ -44,8 +44,9 @@ class UserControllerTest extends WebTestCase
 
         // vérifiez que les données renvoyées contiennent bien les champs attendus
         $this->assertArrayHasKey('id', $responseData);
-        $this->assertArrayHasKey('nom', $responseData);
-        $this->assertArrayHasKey('prenom', $responseData);
+        $this->assertArrayHasKey('lastname', $responseData);
+        $this->assertArrayHasKey('firstname', $responseData);
+        $this->assertArrayHasKey('alias', $responseData);
         $this->assertArrayHasKey('email', $responseData);
         $this->assertArrayHasKey('role', $responseData);
         $this->assertArrayHasKey('service', $responseData);

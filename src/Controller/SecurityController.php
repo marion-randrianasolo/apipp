@@ -39,8 +39,9 @@ class SecurityController extends AbstractController
         return $this->json([
             'email' => $user->getUserIdentifier(),
             'token' => $this->jwtManager->create($user),
-            'nom' => $user->getNom(),
-            'prenom' => $user->getPrenom(),
+            'lastname' => $user->getLastname(),
+            'firstname' => $user->getFirstname(),
+            'alias' => $user->getAlias(),
             'role' => $user->getRole(),
             'service' => $user->getService(),
             'id' => $user->getId(),

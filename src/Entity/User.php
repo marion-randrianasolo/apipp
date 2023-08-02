@@ -32,8 +32,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
     new Post(
         uriTemplate: '/resetForgottenPassword',
         controller: ResetForgottenPasswordController::class
-    )
-])]
+    )],
+
+    normalizationContext: ['groups' => ["user:read"]]
+)]
 
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -41,29 +43,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["user:read"])]
     private ?int $id = null;
 
-    #[Groups(["booking:read"])]
+    #[Groups(["booking:read", "user:read"])]
     #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    private ?string $lastname = null;
 
-    #[Groups(["booking:read"])]
+    #[Groups(["booking:read", "user:read"])]
     #[ORM\Column(length: 255)]
-    private ?string $prenom = null;
+    private ?string $firstname = null;
+
+    #[Groups(["booking:read", "user:read"])]
+    #[ORM\Column(length: 10)]
+    private ?string $alias = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["user:read"])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["user:read"])]
     private ?string $role = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Booking::class)]
+    #[Groups(["user:read"])]
     private Collection $bookings;
 
-    #[Groups(["booking:read"])]
+    #[Groups(["booking:read", "user:read"])]
     #[ORM\Column(length: 255)]
     private ?string $service = null;
 
@@ -83,28 +93,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getLastname(): ?string
     {
-        return $this->nom;
+        return $this->lastname;
     }
 
-    public function setNom(string $nom): static
+    public function setLastname(string $lastname): static
     {
-        $this->nom = $nom;
+        $this->lastname = $lastname;
 
         return $this;
     }
 
-    public function getPrenom(): ?string
+    public function getFirstname(): ?string
     {
-        return $this->prenom;
+        return $this->firstname;
     }
 
-    public function setPrenom(string $prenom): static
+    public function setFirstname(string $firstname): static
     {
-        $this->prenom = $prenom;
+        $this->firstname = $firstname;
 
         return $this;
+    }
+
+    public function getAlias(): ?string
+    {
+        return $this->alias;
+    }
+
+    public function setAlias(?string $alias): void
+    {
+        $this->alias = $alias;
     }
 
     public function getEmail(): ?string

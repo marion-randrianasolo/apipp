@@ -28,8 +28,9 @@ class CreateUserCommand extends Command
         $this
             ->addArgument('email', InputArgument::REQUIRED, 'The email of the user.')
             ->addArgument('password', InputArgument::REQUIRED, 'The plain password of the user.')
-            ->addArgument('nom', InputArgument::REQUIRED, 'The nom of the user.')
-            ->addArgument('prenom', InputArgument::REQUIRED, 'The prenom of the user.')
+            ->addArgument('lastname', InputArgument::REQUIRED, 'The lastname of the user.')
+            ->addArgument('firstname', InputArgument::REQUIRED, 'The firstname of the user.')
+            ->addArgument('alias', InputArgument::REQUIRED, 'The alias of the user.')
             ->addArgument('role', InputArgument::REQUIRED, 'The role of the user.')
             ->addArgument('service', InputArgument::REQUIRED, 'The service of the user.')
             ->setDescription('Creates a new user.')
@@ -41,8 +42,9 @@ class CreateUserCommand extends Command
     {
         $user = new User();
         $user->setEmail($input->getArgument('email'));
-        $user->setNom($input->getArgument('nom'));
-        $user->setPrenom($input->getArgument('prenom'));
+        $user->setLastname($input->getArgument('lastname'));
+        $user->setFirstname($input->getArgument('firstname'));
+        $user->setAlias($input->getArgument('alias'));
         $user->setRole($input->getArgument('role'));
         $user->setService($input->getArgument('service'));
 

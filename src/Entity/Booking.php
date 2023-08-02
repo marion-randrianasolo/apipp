@@ -30,14 +30,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
     new Put(
         uriTemplate: '/editBooking/{id}',
         name: 'edit_booking'
-    ),
-    'get_by_user' => new Get(
-        uriTemplate: '/users/{id}/bookings',
-        controller: BookingsByUser::class,
-        name: 'get_by_user'
     )],
+    //    'get_by_user' => new Get(
+    //        uriTemplate: '/users/{id}/bookings',
+    //        controller: BookingsByUser::class,
+    //        name: 'get_by_user'
+    //    )],
 
-    normalizationContext: ['groups' => ['booking:read']],
+    normalizationContext: ['groups' => ['booking:read']]
 )]
 
 class Booking
