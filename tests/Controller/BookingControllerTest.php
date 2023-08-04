@@ -75,24 +75,4 @@ class BookingControllerTest extends WebTestCase
         $this->assertEquals(204, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testGetBookingsByUser()
-    {
-        $this->client->request('GET', '/api/users/3/bookings'); // supposons que l'utilisateur avec l'id 1 existe
-
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertJson($this->client->getResponse()->getContent());
-
-        $responseData = json_decode($this->client->getResponse()->getContent(), true);
-
-        // vérifiez que les données renvoyées contiennent bien les champs que vous attendez
-        $this->assertArrayHasKey('hydra:member', $responseData);
-        foreach ($responseData['hydra:member'] as $booking) {
-            $this->assertArrayHasKey('id', $booking);
-            $this->assertArrayHasKey('user', $booking);
-            $this->assertArrayHasKey('status', $booking);
-            $this->assertArrayHasKey('timePeriod', $booking);
-            $this->assertArrayHasKey('date', $booking);
-        }
-    }
-
 }

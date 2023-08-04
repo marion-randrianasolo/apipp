@@ -38,16 +38,16 @@ class ForgotPasswordController extends AbstractController
         }
 
         // generate token and set expiration date
-        $token = bin2hex(random_bytes(32));
+        $token = random_int(100000, 999999);
         $user->setResetPasswordToken($token);
-        $user->setResetPasswordTokenExpiration(new \DateTime('now + 1 hour'));
+        $user->setResetPasswordTokenExpiration(new \DateTime('now + 10 minutes'));
 
         // send email
         $email = (new Email())
             ->from('mrandrianasolo@equance.com')
             ->to($user->getEmail())
             ->subject('Password reset request')
-            ->html('<p>Click <a href="exp://192.168.10.117:19000/--/reset-password/' . $token . '">here</a> to reset your password</p>');
+            ->html("<p>Votre pin de réinitialisation de mot de passe est : <strong>{$token}</strong></p>");
 
         try {
             $mailer->send($email);

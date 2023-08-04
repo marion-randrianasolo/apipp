@@ -33,9 +33,15 @@ class ResetForgottenPasswordController extends AbstractController
 
         $user = $this->userRepository->findOneBy(['resetPasswordToken' => $token]);
 
-        if (!$user || $user->getResetPasswordTokenExpiration() < new \DateTime('now')) {
+        if (!$user) {
             return $this->json([
-                'message' => 'Invalid or expired token'
+                'error' => 'invalid_pin'
+            ], 400);
+        }
+
+        if ($user->getResetPasswordTokenExpiration() < new \DateTime('now')) {
+            return $this->json([
+                'error' => 'expired_pin'
             ], 400);
         }
 
