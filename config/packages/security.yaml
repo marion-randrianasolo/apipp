@@ -43,7 +43,6 @@ security:
         - { path: '^/api/deleteBooking/[\d]+', roles: IS_AUTHENTICATED_FULLY }
         - { path: '^/api/editBooking/[\d]+', roles: IS_AUTHENTICATED_FULLY }
         - { path: '^/api/users/[\d]+', roles: IS_AUTHENTICATED_FULLY }
-        - { path: '^/api/users/[\d]+/bookings', roles: IS_AUTHENTICATED_FULLY }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

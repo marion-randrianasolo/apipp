@@ -11,7 +11,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
-use App\Controller\BookingsByUser;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BookingRepository::class)]
@@ -31,11 +30,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
         uriTemplate: '/editBooking/{id}',
         name: 'edit_booking'
     )],
-    //    'get_by_user' => new Get(
-    //        uriTemplate: '/users/{id}/bookings',
-    //        controller: BookingsByUser::class,
-    //        name: 'get_by_user'
-    //    )],
 
     normalizationContext: ['groups' => ['booking:read']]
 )]
