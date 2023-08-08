@@ -83,10 +83,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $service = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $resetPasswordToken = null;
+    private ?string $resetPasswordPin = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $resetPasswordTokenExpiration = null;
+    private ?\DateTimeInterface $resetPasswordPinExpiration = null;
 
     public function __construct()
     {
@@ -235,26 +235,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return (string) $this->email;
     }
 
-    public function getResetPasswordToken(): ?string
+    public function getResetPasswordPin(): ?string
     {
-        return $this->resetPasswordToken;
+        return $this->resetPasswordPin;
     }
 
-    public function setResetPasswordToken(?string $resetPasswordToken): static
+    public function setResetPasswordPin(?string $resetPasswordPin): static
     {
-        $this->resetPasswordToken = $resetPasswordToken;
+        $this->resetPasswordPin = $resetPasswordPin;
 
         return $this;
     }
 
-    public function getResetPasswordTokenExpiration(): ?\DateTimeInterface
+    public function getResetPasswordPinExpiration(): ?\DateTimeInterface
     {
-        return $this->resetPasswordTokenExpiration;
+        return $this->resetPasswordPinExpiration;
     }
 
-    public function setResetPasswordTokenExpiration(?\DateTimeInterface $resetPasswordTokenExpiration): static
+    public function setResetPasswordPinExpiration(?\DateTimeInterface $resetPasswordPinExpiration): static
     {
-        $this->resetPasswordTokenExpiration = $resetPasswordTokenExpiration;
+        $this->resetPasswordPinExpiration = $resetPasswordPinExpiration;
 
         return $this;
     }

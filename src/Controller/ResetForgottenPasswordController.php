@@ -28,10 +28,10 @@ class ResetForgottenPasswordController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $token = $data['token'];
+        $pin = $data['pin'];
         $newPassword = $data['newPassword'];
 
-        $user = $this->userRepository->findOneBy(['resetPasswordToken' => $token]);
+        $user = $this->userRepository->findOneBy(['resetPasswordPin' => $pin]);
 
         if (!$user) {
             return $this->json([
@@ -39,19 +39,19 @@ class ResetForgottenPasswordController extends AbstractController
             ], 400);
         }
 
-        if ($user->getResetPasswordTokenExpiration() < new \DateTime('now')) {
+        if ($user->getResetPasswordPinExpiration() < new \DateTime('now')) {
             return $this->json([
                 'error' => 'expired_pin'
             ], 400);
         }
 
-        // At this point, the token is valid. So we'll encode and set the new password
+        // At this point, the pin is valid. So we'll encode and set the new password
         $encodedNewPassword = $this->passwordEncoder->hashPassword($user, $newPassword);
         $user->setPassword($encodedNewPassword);
 
-        // Clear the reset password token and expiration
-        $user->setResetPasswordToken(null);
-        $user->setResetPasswordTokenExpiration(null);
+        // Clear the reset password pin and expiration
+        $user->setResetPasswordPin(null);
+        $user->setResetPasswordPinExpiration(null);
 
         $this->em->persist($user);
         $this->em->flush();

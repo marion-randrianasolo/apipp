@@ -26,7 +26,7 @@ class ValidatePinController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         $email = $data['email'];
-        $token = $data['token']; // The PIN
+        $pin = $data['pin']; // The PIN
         $user = $this->userRepository->findOneBy(['email' => $email]);
 
         if (!$user) {
@@ -35,17 +35,17 @@ class ValidatePinController extends AbstractController
             ], 404);
         }
 
-        $storedToken = $user->getResetPasswordToken();
-        $expiration = $user->getResetPasswordTokenExpiration();
+        $storedPin = $user->getResetPasswordPin();
+        $expiration = $user->getResetPasswordPinExpiration();
 
-        // Validate token
-        if ($storedToken != $token) {
+        // Validate pin
+        if ($storedPin != $pin) {
             return $this->json([
                 'error' => 'invalid_pin'
             ], 400);
         }
 
-        // Check token expiration
+        // Check pin expiration
         $currentDateTime = new \DateTime('now');
         if ($expiration <= $currentDateTime) {
             return $this->json([
@@ -55,7 +55,7 @@ class ValidatePinController extends AbstractController
 
         return $this->json([
             'success' => 'PIN is valid',
-            'pin' => $token
+            'pin' => $pin
         ]);
     }
 }

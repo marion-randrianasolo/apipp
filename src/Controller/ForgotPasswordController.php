@@ -37,17 +37,17 @@ class ForgotPasswordController extends AbstractController
             ], 404);
         }
 
-        // generate token and set expiration date
-        $token = random_int(100000, 999999);
-        $user->setResetPasswordToken($token);
-        $user->setResetPasswordTokenExpiration(new \DateTime('now + 10 minutes'));
+        // generate pin and set expiration date
+        $pin = random_int(100000, 999999);
+        $user->setResetPasswordPin($pin);
+        $user->setResetPasswordPinExpiration(new \DateTime('now + 10 minutes'));
 
         // send email
         $email = (new Email())
             ->from('mrandrianasolo@equance.com')
             ->to($user->getEmail())
             ->subject('Password reset request')
-            ->html("<p>Votre pin de réinitialisation de mot de passe est : <strong>{$token}</strong></p>");
+            ->html("<p>Votre pin de réinitialisation de mot de passe est : <strong>{$pin}</strong></p>");
 
         try {
             $mailer->send($email);
@@ -61,7 +61,7 @@ class ForgotPasswordController extends AbstractController
         $this->em->flush();
 
         return $this->json([
-            'message' => 'Reset password link has been sent to your email - token : ' . $token,
+            'message' => 'Reset password link has been sent to your email - pin : ' . $pin,
             'email' => $user->getEmail()
         ]);
     }
