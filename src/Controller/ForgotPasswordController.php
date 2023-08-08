@@ -61,7 +61,8 @@ class ForgotPasswordController extends AbstractController
         $this->em->flush();
 
         return $this->json([
-            'message' => 'Reset password link has been sent to your email - token : ' . $token
+            'message' => 'Reset password link has been sent to your email - token : ' . $token,
+            'email' => $user->getEmail()
         ]);
     }
 }

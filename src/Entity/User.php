@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\Post;
 use App\Controller\ForgotPasswordController;
 use App\Controller\ResetForgottenPasswordController;
 use App\Controller\ResetPasswordController;
+use App\Controller\ValidatePinController;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -32,6 +33,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
     new Post(
         uriTemplate: '/resetForgottenPassword',
         controller: ResetForgottenPasswordController::class
+    ),
+    new Post(
+        uriTemplate: '/validatePin',
+        controller: ValidatePinController::class
     )],
 
     normalizationContext: ['groups' => ["user:read"]]
