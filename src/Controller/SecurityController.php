@@ -33,7 +33,7 @@ class SecurityController extends AbstractController
         $user = $userProvider->loadUserByIdentifier($email);
 
         if (!$this->passwordEncoder->isPasswordValid($user, $password)) {
-            throw new AuthenticationException('Invalid email or password');
+            throw new AuthenticationException('Invalid password');
         }
 
         return $this->json([
