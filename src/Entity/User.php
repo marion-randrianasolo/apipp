@@ -30,7 +30,25 @@ use Symfony\Component\Serializer\Annotation\Groups;
         controller: ResetPasswordController::class,
         openapiContext: [
             'summary' => 'Resets Password',
-            'description' => 'Resets Password'
+            'description' => 'Resets Password',
+            'responses' => [
+                '401' => [
+                    'description' => 'Unauthorized'
+                ],
+                '400' => [
+                    'description' => 'Bad Request'
+                ],
+                '200' => [
+                    'description' => 'Password changed successfully',
+                    'content' => [
+                        'application/json' => [
+                            'example' => [
+                                'message' => 'string'
+                            ],
+                        ],
+                    ],
+                ],
+            ]
         ],
         input: ResetPasswordRequest::class
     ),
@@ -39,7 +57,23 @@ use Symfony\Component\Serializer\Annotation\Groups;
         controller: ForgotPasswordController::class,
         openapiContext: [
             'summary' => 'Forgot Password',
-            'description' => 'Forgot Password'
+            'description' => 'Forgot Password',
+            'responses' => [
+                '404' => [
+                    'description' => 'Not Found'
+                ],
+                '200' => [
+                    'description' => 'Email is valid',
+                    'content' => [
+                        'application/json' => [
+                            'example' => [
+                                'message' => 'string',
+                                'email' => 'string'
+                            ],
+                        ],
+                    ],
+                ],
+            ]
         ],
         input: ForgotPasswordRequest::class
     ),
@@ -48,7 +82,22 @@ use Symfony\Component\Serializer\Annotation\Groups;
         controller: ResetForgottenPasswordController::class,
         openapiContext: [
             'summary' => 'Resets Forgotten Password',
-            'description' => 'Resets Forgotten Password'
+            'description' => 'Resets Forgotten Password',
+            'responses' => [
+                '400' => [
+                    'description' => 'Bad Request'
+                ],
+                '200' => [
+                    'description' => 'string',
+                    'content' => [
+                        'application/json' => [
+                            'example' => [
+                                'message' => 'string'
+                            ],
+                        ],
+                    ],
+                ],
+            ]
         ],
         input: ResetForgottenPasswordRequest::class
     ),
@@ -57,7 +106,23 @@ use Symfony\Component\Serializer\Annotation\Groups;
         controller: ValidatePinController::class,
         openapiContext: [
             'summary' => 'Validates PIN',
-            'description' => 'Validates PIN'
+            'description' => 'Validates PIN',
+            'responses' => [
+                '400' => [
+                    'description' => 'Bad Request'
+                ],
+                '200' => [
+                    'description' => 'PIN is valid',
+                    'content' => [
+                        'application/json' => [
+                            'example' => [
+                                'success' => 'string',
+                                'pin' => 'string',
+                            ],
+                        ],
+                    ],
+                ],
+            ]
         ],
         input: ValidatePinRequest::class
     )],
