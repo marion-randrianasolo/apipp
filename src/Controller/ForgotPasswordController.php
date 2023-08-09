@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DTO\ForgotPasswordRequest;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,25 +25,27 @@ class ForgotPasswordController extends AbstractController
         $this->em = $entityManager;
     }
 
-    public function __invoke(Request $request, MailerInterface $mailer): JsonResponse
+    public function __invoke(Request $request, MailerInterface $mailer, ForgotPasswordRequest $forgotPasswordRequest): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
+        // Extract email from request
+        $email = $forgotPasswordRequest->email;
 
-        $email = $data['email'];
+        // Find the user by email
         $user = $this->userRepository->findOneBy(['email' => $email]);
 
+        // Check if the user is found
         if (!$user) {
             return $this->json([
                 'message' => 'No user with this email'
             ], 404);
         }
 
-        // generate pin and set expiration date
+        // Generate pin and set expiration date
         $pin = random_int(100000, 999999);
         $user->setResetPasswordPin($pin);
         $user->setResetPasswordPinExpiration(new \DateTime('now + 10 minutes'));
 
-        // send email
+        // Send email
         $email = (new Email())
             ->from('mrandrianasolo@equance.com')
             ->to($user->getEmail())

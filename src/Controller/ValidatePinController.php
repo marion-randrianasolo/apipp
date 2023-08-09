@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DTO\ValidatePinRequest;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,20 +22,23 @@ class ValidatePinController extends AbstractController
         $this->em = $entityManager;
     }
 
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request, ValidatePinRequest $validatePinRequest): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
+        // Extract email and PIN from request
+        $email = $validatePinRequest->email;
+        $pin = $validatePinRequest->pin;
 
-        $email = $data['email'];
-        $pin = $data['pin']; // The PIN
+        // Find the user by email
         $user = $this->userRepository->findOneBy(['email' => $email]);
 
+        // Check if the user is found
         if (!$user) {
             return $this->json([
                 'error' => 'No user with this email'
-            ], 404);
+            ], 400);
         }
 
+        // Retrieve the stored PIN and expiration from the user
         $storedPin = $user->getResetPasswordPin();
         $expiration = $user->getResetPasswordPinExpiration();
 
@@ -53,6 +57,7 @@ class ValidatePinController extends AbstractController
             ], 400);
         }
 
+        // If validation is successful, return success response
         return $this->json([
             'success' => 'PIN is valid',
             'pin' => $pin

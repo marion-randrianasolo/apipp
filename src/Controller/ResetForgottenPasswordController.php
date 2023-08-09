@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DTO\ResetForgottenPasswordRequest;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,21 +25,23 @@ class ResetForgottenPasswordController extends AbstractController
         $this->userRepository = $userRepository;
     }
 
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request, ResetForgottenPasswordRequest $resetForgottenPasswordRequest): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
+        // Extract new password and PIN from request
+        $pin = $resetForgottenPasswordRequest->pin;
+        $newPassword = $resetForgottenPasswordRequest->newPassword;
 
-        $pin = $data['pin'];
-        $newPassword = $data['newPassword'];
-
+        // Find the user by PIN
         $user = $this->userRepository->findOneBy(['resetPasswordPin' => $pin]);
 
+        // Check if the pin is valid
         if (!$user) {
             return $this->json([
                 'error' => 'invalid_pin'
             ], 400);
         }
 
+        // Check if the pin is expired
         if ($user->getResetPasswordPinExpiration() < new \DateTime('now')) {
             return $this->json([
                 'error' => 'expired_pin'

@@ -14,6 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
     new Post(
         uriTemplate: '/login',
         controller: SecurityController::class,
+        openapiContext: [
+            'summary' => 'Authentification',
+            'description' => 'Authentification'
+        ],
     ),
 ])]
 class Auth

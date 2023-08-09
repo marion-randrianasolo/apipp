@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use ApiPlatform\Exception\InvalidArgumentException;
+use App\DTO\ResetPasswordRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -23,15 +24,15 @@ class ResetPasswordController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    public function __invoke(Request $request, UserProviderInterface $userProvider): JsonResponse
+    public function __invoke(Request $request, UserProviderInterface $userProvider, ResetPasswordRequest $resetPasswordRequest): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-
-        $oldPassword = $data['oldPassword'];
-        $newPassword = $data['newPassword'];
+        // Extract old and new password from request
+        $oldPassword = $resetPasswordRequest->oldPassword;
+        $newPassword = $resetPasswordRequest->newPassword;
 
         $user = $this->getUser();
 
+        // If the password is invalid, throw exception
         if (!$this->passwordEncoder->isPasswordValid($user, $oldPassword)) {
             throw new InvalidArgumentException("Invalid old password");
         }
@@ -44,6 +45,7 @@ class ResetPasswordController extends AbstractController
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
+        // If validation is successful, return success response
         return $this->json([
             'message' => 'Password changed successfully'
         ]);

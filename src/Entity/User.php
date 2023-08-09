@@ -1,5 +1,4 @@
 <?php
-// Equmtp23 passphrase
 
 namespace App\Entity;
 
@@ -10,6 +9,10 @@ use App\Controller\ForgotPasswordController;
 use App\Controller\ResetForgottenPasswordController;
 use App\Controller\ResetPasswordController;
 use App\Controller\ValidatePinController;
+use App\DTO\ForgotPasswordRequest;
+use App\DTO\ResetForgottenPasswordRequest;
+use App\DTO\ResetPasswordRequest;
+use App\DTO\ValidatePinRequest;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -24,19 +27,39 @@ use Symfony\Component\Serializer\Annotation\Groups;
     new Get(uriTemplate: '/users/{id}'),
     new Post(
         uriTemplate: '/resetPassword',
-        controller: ResetPasswordController::class
+        controller: ResetPasswordController::class,
+        openapiContext: [
+            'summary' => 'Resets Password',
+            'description' => 'Resets Password'
+        ],
+        input: ResetPasswordRequest::class
     ),
     new Post(
         uriTemplate: '/forgotPassword',
-        controller: ForgotPasswordController::class
+        controller: ForgotPasswordController::class,
+        openapiContext: [
+            'summary' => 'Forgot Password',
+            'description' => 'Forgot Password'
+        ],
+        input: ForgotPasswordRequest::class
     ),
     new Post(
         uriTemplate: '/resetForgottenPassword',
-        controller: ResetForgottenPasswordController::class
+        controller: ResetForgottenPasswordController::class,
+        openapiContext: [
+            'summary' => 'Resets Forgotten Password',
+            'description' => 'Resets Forgotten Password'
+        ],
+        input: ResetForgottenPasswordRequest::class
     ),
     new Post(
         uriTemplate: '/validatePin',
-        controller: ValidatePinController::class
+        controller: ValidatePinController::class,
+        openapiContext: [
+            'summary' => 'Validates PIN',
+            'description' => 'Validates PIN'
+        ],
+        input: ValidatePinRequest::class
     )],
 
     normalizationContext: ['groups' => ["user:read"]]
