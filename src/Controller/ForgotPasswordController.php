@@ -49,7 +49,7 @@ class ForgotPasswordController extends AbstractController
         $email = (new Email())
             ->from('mrandrianasolo@equance.com')
             ->to($user->getEmail())
-            ->subject('Password reset request')
+            ->subject('Réinitialisation de votre mot de passe')
             ->html("<p>Votre pin de réinitialisation de mot de passe est : <strong>{$pin}</strong></p>");
 
         try {
