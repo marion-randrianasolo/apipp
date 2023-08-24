@@ -13,16 +13,29 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class CreateUserCommand extends Command
 {
     protected static $defaultName = 'app:create-user';
+
+    // Initialisation des propriétés pour le hashage de mot de passe et la gestion de l'entité
     private UserPasswordHasherInterface $passwordEncoder;
     private EntityManagerInterface $entityManager;
 
+    /**
+     * Constructeur
+     *
+     * @param UserPasswordHasherInterface $passwordEncoder
+     * @param EntityManagerInterface $entityManager
+     */
     public function __construct(UserPasswordHasherInterface $passwordEncoder, EntityManagerInterface $entityManager)
     {
         parent::__construct();
-        $this->passwordEncoder = $passwordEncoder;
-        $this->entityManager = $entityManager;
+        $this->passwordEncoder = $passwordEncoder; // Initialisation du hasher de mot de passe
+        $this->entityManager = $entityManager;  // Initialisation du gestionnaire d'entités
     }
 
+    /**
+     * Configuration de la commande
+     *
+     * @return void
+     */
     protected function configure()
     {
         $this
@@ -38,9 +51,19 @@ class CreateUserCommand extends Command
         ;
     }
 
+    /**
+     * Exécution de la commande
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Création d'une nouvelle instance utilisateur
         $user = new User();
+
+        // Configuration des propriétés de l'utilisateur à partir des arguments
         $user->setEmail($input->getArgument('email'));
         $user->setLastname($input->getArgument('lastname'));
         $user->setFirstname($input->getArgument('firstname'));
@@ -48,12 +71,15 @@ class CreateUserCommand extends Command
         $user->setRole($input->getArgument('role'));
         $user->setService($input->getArgument('service'));
 
+        // Hashage et configuration du mot de passe
         $password = $this->passwordEncoder->hashPassword($user, $input->getArgument('password'));
         $user->setPassword($password);
 
+        // Persistance et sauvegarde de l'utilisateur
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
+        // Affichage d'une confirmation de création
         $output->writeln('User created!');
 
         return Command::SUCCESS;
