@@ -33,6 +33,7 @@ use phpDocumentor\Reflection\Types\Integer;
                                 'firstname' => 'string',
                                 'alias' => 'string',
                                 'role' => 'string',
+                                'tempsTravail' => 'string',
                                 'service' => 'string',
                                 'id' => 0,
                             ],

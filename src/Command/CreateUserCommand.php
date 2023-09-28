@@ -45,6 +45,7 @@ class CreateUserCommand extends Command
             ->addArgument('firstname', InputArgument::REQUIRED, 'The firstname of the user.')
             ->addArgument('alias', InputArgument::REQUIRED, 'The alias of the user.')
             ->addArgument('role', InputArgument::REQUIRED, 'The role of the user.')
+            ->addArgument('tempsTravail', InputArgument::REQUIRED, 'The amount of time worked of the user.')
             ->addArgument('service', InputArgument::REQUIRED, 'The service of the user.')
             ->setDescription('Creates a new user.')
             ->setHelp('This command allows you to create a user...')
@@ -69,6 +70,7 @@ class CreateUserCommand extends Command
         $user->setFirstname($input->getArgument('firstname'));
         $user->setAlias($input->getArgument('alias'));
         $user->setRole($input->getArgument('role'));
+        $user->setTempsTravail($input->getArgument('tempsTravail'));
         $user->setService($input->getArgument('service'));
 
         // Hashage et configuration du mot de passe

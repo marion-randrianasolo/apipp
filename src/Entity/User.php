@@ -162,6 +162,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(["user:read"])]
     private ?string $role = null;
 
+    #[ORM\Column(length: 255)]
+    #[Groups(["user:read"])]
+    private ?string $tempsTravail = null;
+
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Booking::class)]
     #[Groups(["user:read"])]
     private Collection $bookings;
@@ -256,6 +260,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getTempsTravail(): ?string
+    {
+        return $this->tempsTravail;
+    }
+
+    public function setTempsTravail(string $tempsTravail): static
+    {
+        $this->tempsTravail = $tempsTravail;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, Booking>
      */
@@ -311,7 +327,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials()
     {
-        // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
 

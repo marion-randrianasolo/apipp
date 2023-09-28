@@ -68,6 +68,7 @@ class UserControllerTest extends WebTestCase
         $this->assertArrayHasKey('alias', $responseData);
         $this->assertArrayHasKey('email', $responseData);
         $this->assertArrayHasKey('role', $responseData);
+        $this->assertArrayHasKey('tempsTravail', $responseData);
         $this->assertArrayHasKey('service', $responseData);
         $this->assertArrayHasKey('bookings', $responseData);
     }
