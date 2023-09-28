@@ -163,7 +163,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $role = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["user:read"])]
+    #[Groups(["booking:read", "user:read"])]
     private ?string $tempsTravail = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Booking::class)]
