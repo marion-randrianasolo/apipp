@@ -44,6 +44,8 @@ security:
         - { path: '^/api/editBooking/[\d]+', roles: IS_AUTHENTICATED_FULLY }
         - { path: '^/api/users/[\d]+', roles: IS_AUTHENTICATED_FULLY }
         - { path: '^/api/users', roles: IS_AUTHENTICATED_FULLY }
+        - { path: '^/api/sendAlert25', roles: IS_AUTHENTICATED_FULLY }
+        - { path: '^/api/sendAlertToday', roles: IS_AUTHENTICATED_FULLY }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
