@@ -6,10 +6,12 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use App\Controller\AddUserController;
 use App\Controller\ForgotPasswordController;
 use App\Controller\ResetForgottenPasswordController;
 use App\Controller\ResetPasswordController;
 use App\Controller\ValidatePinController;
+use App\DTO\AddUserRequest;
 use App\DTO\ForgotPasswordRequest;
 use App\DTO\ResetForgottenPasswordRequest;
 use App\DTO\ResetPasswordRequest;
@@ -27,6 +29,33 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(operations: [
     new GetCollection(),
     new Get(uriTemplate: '/users/{id}'),
+    new Post(
+        uriTemplate: '/addUser',
+        controller: AddUserController::class,
+        openapiContext: [
+            'summary' => 'Add User',
+            'description' => 'Add User',
+            'responses' => [
+                '401' => [
+                    'description' => 'Unauthorized'
+                ],
+                '400' => [
+                    'description' => 'Bad Request'
+                ],
+                '200' => [
+                    'description' => 'User added successfully',
+                    'content' => [
+                        'application/json' => [
+                            'example' => [
+                                'message' => 'string'
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        ],
+        input: AddUserRequest::class,
+    ),
     new Post(
         uriTemplate: '/resetPassword',
         controller: ResetPasswordController::class,
