@@ -48,9 +48,9 @@ class AlertMailPassedTodayController extends AbstractController
         $formattedDateList = implode(', ', $formattedDates);
         if (count($formattedDates) > 1) {
             $formattedDateList = '<ul><li>' . implode('</li><li>', $formattedDates) . '</li></ul>';
-            $emailContent = "<p>L'utilisateur {$user->getEmail()} a {$action} sa présence pour les dates ci-dessous, antérieures à aujourd'hui :</p> {$formattedDateList}";
+            $emailContent = "<p>L'utilisateur {$user->getFirstname()} {$user->getLastname()} a {$action} sa présence pour les dates ci-dessous, antérieures à aujourd'hui :</p> {$formattedDateList}";
         } else {
-            $emailContent = "<p>L'utilisateur {$user->getEmail()} a {$action} sa présence pour le <strong>{$formattedDateList}</strong>, antérieure à aujourd'hui.</p>";
+            $emailContent = "<p>L'utilisateur {$user->getFirstname()} {$user->getLastname()} a {$action} sa présence pour le <strong>{$formattedDateList}</strong>, antérieure à aujourd'hui.</p>";
         }
 
         // Configurer et envoyer l'e-mail d'alerte

@@ -51,9 +51,9 @@ class AlertMail25Controller extends AbstractController
         $formattedDateList = implode(', ', $formattedDates);
         if (count($formattedDates) > 1) {
             $formattedDateList = '<ul><li>' . implode('</li><li>', $formattedDates) . '</li></ul>';
-            $emailContent = "<p>L'utilisateur {$user->getEmail()} a {$action} sa présence pour les dates ci-dessous, enregistrées après le 25 du mois :</p> {$formattedDateList}";
+            $emailContent = "<p>L'utilisateur {$user->getFirstname()} {$user->getLastname()} a {$action} sa présence pour les dates ci-dessous, enregistrées après le 25 du mois :</p> {$formattedDateList}";
         } else {
-            $emailContent = "<p>L'utilisateur {$user->getEmail()} a {$action} sa présence pour le <strong>{$formattedDateList}</strong>, enregistrée après le 25 du mois.</p>";
+            $emailContent = "<p>L'utilisateur {$user->getFirstname()} {$user->getLastname()} a {$action} sa présence pour le <strong>{$formattedDateList}</strong>, enregistrée après le 25 du mois.</p>";
         }
 
         $email = (new Email())
