@@ -37,8 +37,10 @@ class AlertMail25Controller extends AbstractController
 
         // Récupérez la date du booking depuis la requête
         $data = json_decode($request->getContent(), true);
+
         // Récupérer les dates du booking depuis la requête
         $bookingDates = $data['bookingDates'] ?? [];
+        $action = $data['action'] ?? 'effectué';
 
         $formattedDates = [];
         foreach ($bookingDates as $date) {
@@ -47,7 +49,12 @@ class AlertMail25Controller extends AbstractController
         }
 
         $formattedDateList = implode(', ', $formattedDates);
-        $emailContent = "<p>L'utilisateur {$user->getEmail()} a déclaré des présences pour les dates suivantes : {$formattedDateList}, passées le 25 de ce mois-ci.</p>";
+        if (count($formattedDates) > 1) {
+            $formattedDateList = '<ul><li>' . implode('</li><li>', $formattedDates) . '</li></ul>';
+            $emailContent = "<p>L'utilisateur {$user->getEmail()} a {$action} sa présence pour les dates ci-dessous, enregistrées après le 25 du mois :</p> {$formattedDateList}";
+        } else {
+            $emailContent = "<p>L'utilisateur {$user->getEmail()} a {$action} sa présence pour le <strong>{$formattedDateList}</strong>, enregistrée après le 25 du mois.</p>";
+        }
 
         $email = (new Email())
             ->from('mrandrianasolo@equance.com')

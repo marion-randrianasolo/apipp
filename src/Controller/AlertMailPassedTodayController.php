@@ -37,6 +37,7 @@ class AlertMailPassedTodayController extends AbstractController
         $data = json_decode($request->getContent(), true);
         // Récupérer les dates du booking depuis la requête
         $bookingDates = $data['bookingDates'] ?? [];
+        $action = $data['action'] ?? 'effectué';
 
         $formattedDates = [];
         foreach ($bookingDates as $date) {
@@ -45,13 +46,19 @@ class AlertMailPassedTodayController extends AbstractController
         }
 
         $formattedDateList = implode(', ', $formattedDates);
+        if (count($formattedDates) > 1) {
+            $formattedDateList = '<ul><li>' . implode('</li><li>', $formattedDates) . '</li></ul>';
+            $emailContent = "<p>L'utilisateur {$user->getEmail()} a {$action} sa présence pour les dates ci-dessous, antérieures à aujourd'hui :</p> {$formattedDateList}";
+        } else {
+            $emailContent = "<p>L'utilisateur {$user->getEmail()} a {$action} sa présence pour le <strong>{$formattedDateList}</strong>, antérieure à aujourd'hui.</p>";
+        }
 
         // Configurer et envoyer l'e-mail d'alerte
         $email = (new Email())
             ->from('mrandrianasolo@equance.com')
             ->to('virgosgroove@yopmail.com') // envoyer à la RH
             ->subject('Alerte Planning Présence')
-            ->html("<p>L'utilisateur {$user->getEmail()} a déclaré des présences pour les dates suivantes : {$formattedDateList}, inférieures à ce jour.</p>");
+            ->html($emailContent);
 
         try {
             $mailer->send($email);
