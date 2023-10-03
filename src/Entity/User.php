@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Controller\AddUserController;
 use App\Controller\ForgotPasswordController;
 use App\Controller\ResetForgottenPasswordController;
@@ -55,6 +57,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
             ]
         ],
         input: AddUserRequest::class,
+    ),
+    new Put(
+        uriTemplate: '/editUser/{id}',
+        name: 'edit_user'
+    ),
+    new Delete(
+        uriTemplate: '/deleteUser/{id}',
+        name: 'delete_user'
     ),
     new Post(
         uriTemplate: '/resetPassword',

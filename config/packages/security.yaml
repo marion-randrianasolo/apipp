@@ -47,6 +47,8 @@ security:
         - { path: '^/api/sendAlert25', roles: IS_AUTHENTICATED_FULLY }
         - { path: '^/api/sendAlertToday', roles: IS_AUTHENTICATED_FULLY }
         - { path: '^/api/addUser', roles: IS_AUTHENTICATED_FULLY }
+        - { path: '^/api/editUser/[\d]+', roles: IS_AUTHENTICATED_FULLY }
+        - { path: '^/api/deleteUser/[\d]+', roles: IS_AUTHENTICATED_FULLY }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
