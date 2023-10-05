@@ -26,6 +26,11 @@ class UserRepository extends ServiceEntityRepository
         return $this->findOneBy(['email' => $email]);
     }
 
+    public function findOneByAlias(string $alias): ?User
+    {
+        return $this->findOneBy(['alias' => $alias]);
+    }
+
     public function save(User $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

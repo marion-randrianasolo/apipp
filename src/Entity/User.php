@@ -9,11 +9,13 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\AddUserController;
+use App\Controller\EditUserController;
 use App\Controller\ForgotPasswordController;
 use App\Controller\ResetForgottenPasswordController;
 use App\Controller\ResetPasswordController;
 use App\Controller\ValidatePinController;
 use App\DTO\AddUserRequest;
+use App\DTO\EditUserRequest;
 use App\DTO\ForgotPasswordRequest;
 use App\DTO\ResetForgottenPasswordRequest;
 use App\DTO\ResetPasswordRequest;
@@ -60,7 +62,30 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ),
     new Put(
         uriTemplate: '/editUser/{id}',
-        name: 'edit_user'
+        controller: EditUserController::class,
+        openapiContext: [
+            'summary' => 'Edit User',
+            'description' => 'Edit User',
+            'responses' => [
+                '401' => [
+                    'description' => 'Unauthorized'
+                ],
+                '400' => [
+                    'description' => 'Bad Request'
+                ],
+                '200' => [
+                    'description' => 'User updated successfully',
+                    'content' => [
+                        'application/json' => [
+                            'example' => [
+                                'message' => 'string'
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        input: EditUserRequest::class,
     ),
     new Delete(
         uriTemplate: '/deleteUser/{id}',

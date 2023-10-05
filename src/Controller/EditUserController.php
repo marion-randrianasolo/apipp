@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\DTO\AddUserRequest;
+use App\DTO\EditUserRequest;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,26 +11,22 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsController]
-class AddUserController extends AbstractController
+class EditUserController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
-    private UserPasswordHasherInterface $passwordEncoder;
     private UserRepository $userRepository;
 
     /**
      * Constructeur pour injecter les dépendances nécessaires
      *
      * @param EntityManagerInterface $entityManager
-     * @param UserPasswordHasherInterface $passwordEncoder
      * @param UserRepository $userRepository
      */
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordEncoder, UserRepository $userRepository)
+    public function __construct(EntityManagerInterface $entityManager, UserRepository $userRepository)
     {
         $this->entityManager = $entityManager;
-        $this->passwordEncoder = $passwordEncoder;
         $this->userRepository = $userRepository;
     }
 
@@ -40,7 +36,7 @@ class AddUserController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    public function __invoke(Request $request, AddUserRequest $addUserRequest): JsonResponse
+    public function __invoke(Request $request, User $user, EditUserRequest $editUserRequest): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -48,28 +44,40 @@ class AddUserController extends AbstractController
         $existingMail = $this->userRepository->findOneByEmail($data['email']);
         $existingAlias = $this->userRepository->findOneByAlias($data['alias']);
 
-        if ($existingMail) {
+        if ($existingMail && $existingMail->getId() !== $user->getId()) {
             return new JsonResponse(['error' => 'Already existing email'], Response::HTTP_BAD_REQUEST);
         }
 
-        if ($existingAlias) {
+        if ($existingAlias && $existingAlias->getId() !== $user->getId()) {
             return new JsonResponse(['error' => 'Already existing alias'], Response::HTTP_BAD_REQUEST);
         }
 
-        $user = new User();
-        $user->setEmail($data['email']);
-        $user->setLastname($data['lastname']);
-        $user->setFirstname($data['firstname']);
-        $user->setAlias($data['alias']);
-        $user->setRole($data['role']);
-        $user->setTempsTravail($data['tempsTravail']);
-        $user->setService($data['service']);
-        $password = $this->passwordEncoder->hashPassword($user, $data['password']);
-        $user->setPassword($password);
+        // Update user details
+        if (isset($data['email'])) {
+            $user->setEmail($data['email']);
+        }
+        if (isset($data['lastname'])) {
+            $user->setLastname($data['lastname']);
+        }
+        if (isset($data['firstname'])) {
+            $user->setFirstname($data['firstname']);
+        }
+        if (isset($data['alias'])) {
+            $user->setAlias($data['alias']);
+        }
+        if (isset($data['role'])) {
+            $user->setRole($data['role']);
+        }
+        if (isset($data['tempsTravail'])) {
+            $user->setTempsTravail($data['tempsTravail']);
+        }
+        if (isset($data['service'])) {
+            $user->setService($data['service']);
+        }
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        return new JsonResponse(['status' => 'User created!'], Response::HTTP_CREATED);
+        return new JsonResponse(['status' => 'User updated!'], Response::HTTP_CREATED);
     }
 }
