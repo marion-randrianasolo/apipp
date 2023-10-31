@@ -221,6 +221,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(["user:read"])]
     private ?string $email = null;
 
+    #[ORM\Column(length: 30)]
+    #[Groups(["user:read"])]
+    private ?string $username = null;
+
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
@@ -300,6 +304,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->email = $email;
 
         return $this;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(?string $username): void
+    {
+        $this->username = $username;
     }
 
     public function getPassword(): ?string
@@ -401,7 +415,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     public function getResetPasswordPin(): ?string

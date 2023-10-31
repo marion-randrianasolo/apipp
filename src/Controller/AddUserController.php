@@ -47,6 +47,7 @@ class AddUserController extends AbstractController
         // Vérifiez si un utilisateur avec cet email ou alias existe déjà
         $existingMail = $this->userRepository->findOneByEmail($data['email']);
         $existingAlias = $this->userRepository->findOneByAlias($data['alias']);
+        $existingUsername = $this->userRepository->findOneByUsername($data['username']);
 
         if ($existingMail) {
             return new JsonResponse(['error' => 'Already existing email'], Response::HTTP_BAD_REQUEST);
@@ -56,11 +57,16 @@ class AddUserController extends AbstractController
             return new JsonResponse(['error' => 'Already existing alias'], Response::HTTP_BAD_REQUEST);
         }
 
+        if ($existingUsername) {
+            return new JsonResponse(['error' => 'Already existing username'], Response::HTTP_BAD_REQUEST);
+        }
+
         $user = new User();
         $user->setEmail($data['email']);
         $user->setLastname($data['lastname']);
         $user->setFirstname($data['firstname']);
         $user->setAlias($data['alias']);
+        $user->setUsername($data['username']);
         $user->setRole($data['role']);
         $user->setTempsTravail($data['tempsTravail']);
         $user->setService($data['service']);
@@ -70,6 +76,17 @@ class AddUserController extends AbstractController
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        return new JsonResponse(['status' => 'User created!'], Response::HTTP_CREATED);
+        return new JsonResponse([
+            'status' => 'User created!',
+            'id' => $user->getId(),
+            'username' => $user->getUsername(),
+            'email' => $user->getEmail(),
+            'lastname' => $user->getLastname(),
+            'firstname' => $user->getFirstname(),
+            'alias' => $user->getAlias(),
+            'role' => $user->getRole(),
+            'tempsTravail' => $user->getTempsTravail(),
+            'service' => $user->getService(),
+        ], Response::HTTP_CREATED);
     }
 }

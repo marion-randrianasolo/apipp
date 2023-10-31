@@ -27,6 +27,7 @@ use phpDocumentor\Reflection\Types\Integer;
                     'content' => [
                         'application/json' => [
                             'example' => [
+                                'username' => 'string',
                                 'email' => 'string',
                                 'token' => 'string',
                                 'lastname' => 'string',
@@ -53,7 +54,7 @@ class Auth
 
     #[ApiProperty]
     #[ORM\Column(length: 255)]
-    private ?string $email = null;
+    private ?string $username = null;
 
     #[ApiProperty]
     #[ORM\Column(length: 255)]
@@ -67,17 +68,18 @@ class Auth
     /**
      * @return string|null
      */
-    public function getEmail(): ?string
+    public function getUsername(): ?string
     {
-        return $this->email;
+        return $this->username;
     }
 
     /**
-     * @param string|null $email
+     * @param string|null $username
+     * @return void
      */
-    public function setEmail(?string $email): void
+    public function setUsername(?string $username): void
     {
-        $this->email = $email;
+        $this->username = $username;
     }
 
     /**

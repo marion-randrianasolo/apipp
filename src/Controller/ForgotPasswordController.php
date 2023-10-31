@@ -62,7 +62,7 @@ class ForgotPasswordController extends AbstractController
 
         // Envoyer l'email avec le code PIN
         $email = (new Email())
-            ->from('mrandrianasolo@equance.com')
+            ->from('infra@equance.com')
             ->to($user->getEmail())
             ->subject('Réinitialisation de votre mot de passe')
             ->html("<p>Votre pin de réinitialisation de mot de passe est : <strong>{$pin}</strong></p>");

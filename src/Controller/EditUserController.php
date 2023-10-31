@@ -43,6 +43,7 @@ class EditUserController extends AbstractController
         // Vérifiez si un utilisateur avec cet email ou alias existe déjà
         $existingMail = $this->userRepository->findOneByEmail($data['email']);
         $existingAlias = $this->userRepository->findOneByAlias($data['alias']);
+        $existingUsername = $this->userRepository->findOneByUsername($data['username']);
 
         if ($existingMail && $existingMail->getId() !== $user->getId()) {
             return new JsonResponse(['error' => 'Already existing email'], Response::HTTP_BAD_REQUEST);
@@ -50,6 +51,10 @@ class EditUserController extends AbstractController
 
         if ($existingAlias && $existingAlias->getId() !== $user->getId()) {
             return new JsonResponse(['error' => 'Already existing alias'], Response::HTTP_BAD_REQUEST);
+        }
+
+        if ($existingUsername && $existingUsername->getId() !== $user->getId()) {
+            return new JsonResponse(['error' => 'Already existing username'], Response::HTTP_BAD_REQUEST);
         }
 
         // Update user details
@@ -64,6 +69,9 @@ class EditUserController extends AbstractController
         }
         if (isset($data['alias'])) {
             $user->setAlias($data['alias']);
+        }
+        if (isset($data['username'])) {
+            $user->setUsername($data['username']);
         }
         if (isset($data['role'])) {
             $user->setRole($data['role']);

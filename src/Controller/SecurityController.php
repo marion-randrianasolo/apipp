@@ -43,11 +43,11 @@ class SecurityController extends AbstractController
         // Décoder le contenu JSON de la requête
         $data = json_decode($request->getContent(), true);
 
-        $email = $data['email'];
+        $username = $data['username'];
         $password = $data['password'];
 
         // Charger l'utilisateur par son identifiant (email)
-        $user = $userProvider->loadUserByIdentifier($email);
+        $user = $userProvider->loadUserByIdentifier($username);
 
         // Vérifier si le mot de passe est valide pour cet utilisateur
         if (!$this->passwordEncoder->isPasswordValid($user, $password)) {
@@ -56,7 +56,8 @@ class SecurityController extends AbstractController
 
         // Retourner les informations de l'utilisateur ainsi que son token JWT
         return $this->json([
-            'email' => $user->getUserIdentifier(),
+            'username' => $user->getUserIdentifier(),
+            'email' => $user->getEmail(),
             'token' => $this->jwtManager->create($user),
             'lastname' => $user->getLastname(),
             'firstname' => $user->getFirstname(),

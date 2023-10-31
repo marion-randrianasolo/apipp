@@ -57,7 +57,7 @@ class AlertMail25Controller extends AbstractController
         }
 
         $email = (new Email())
-            ->from('mrandrianasolo@equance.com')
+            ->from('infra@equance.com')
             ->to('virgosgroove@yopmail.com') // envoyer à la RH
             ->subject('Alerte Planning Présence')
             ->html($emailContent);

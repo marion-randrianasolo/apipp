@@ -31,6 +31,11 @@ class UserRepository extends ServiceEntityRepository
         return $this->findOneBy(['alias' => $alias]);
     }
 
+    public function findOneByUsername(string $username): ?User
+    {
+        return $this->findOneBy(['username' => $username]);
+    }
+
     public function save(User $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

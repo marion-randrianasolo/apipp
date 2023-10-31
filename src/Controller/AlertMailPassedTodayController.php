@@ -55,7 +55,7 @@ class AlertMailPassedTodayController extends AbstractController
 
         // Configurer et envoyer l'e-mail d'alerte
         $email = (new Email())
-            ->from('mrandrianasolo@equance.com')
+            ->from('infra@equance.com')
             ->to('virgosgroove@yopmail.com') // envoyer à la RH
             ->subject('Alerte Planning Présence')
             ->html($emailContent);
