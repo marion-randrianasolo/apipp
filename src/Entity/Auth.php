@@ -32,6 +32,7 @@ use phpDocumentor\Reflection\Types\Integer;
                                 'token' => 'string',
                                 'lastname' => 'string',
                                 'firstname' => 'string',
+                                'emailPro' => 'string',
                                 'alias' => 'string',
                                 'role' => 'string',
                                 'tempsTravail' => 'string',

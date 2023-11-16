@@ -61,6 +61,7 @@ class SecurityController extends AbstractController
             'token' => $this->jwtManager->create($user),
             'lastname' => $user->getLastname(),
             'firstname' => $user->getFirstname(),
+            'emailPro' => $user->getEmailPro(),
             'alias' => $user->getAlias(),
             'role' => $user->getRole(),
             'tempsTravail' => $user->getTempsTravail(),

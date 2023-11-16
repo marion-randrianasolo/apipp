@@ -46,11 +46,16 @@ class AddUserController extends AbstractController
 
         // Vérifiez si un utilisateur avec cet email ou alias existe déjà
         $existingMail = $this->userRepository->findOneByEmail($data['email']);
+        $existingMailPro = $this->userRepository->findOneByEmailPro($data['emailPro']);
         $existingAlias = $this->userRepository->findOneByAlias($data['alias']);
         $existingUsername = $this->userRepository->findOneByUsername($data['username']);
 
         if ($existingMail) {
             return new JsonResponse(['error' => 'Already existing email'], Response::HTTP_BAD_REQUEST);
+        }
+
+        if ($existingMailPro) {
+            return new JsonResponse(['error' => 'Already existing pro'], Response::HTTP_BAD_REQUEST);
         }
 
         if ($existingAlias) {
@@ -63,6 +68,7 @@ class AddUserController extends AbstractController
 
         $user = new User();
         $user->setEmail($data['email']);
+        $user->setEmailPro($data['emailPro']);
         $user->setLastname($data['lastname']);
         $user->setFirstname($data['firstname']);
         $user->setAlias($data['alias']);
@@ -81,6 +87,7 @@ class AddUserController extends AbstractController
             'id' => $user->getId(),
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
+            'emailPro' => $user->getEmailPro(),
             'lastname' => $user->getLastname(),
             'firstname' => $user->getFirstname(),
             'alias' => $user->getAlias(),

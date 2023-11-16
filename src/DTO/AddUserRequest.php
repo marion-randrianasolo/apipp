@@ -5,6 +5,7 @@ namespace App\DTO;
 class AddUserRequest
 {
     public string $email;
+    public string $emailPro;
     public string $username;
     public string $firstname;
     public string $lastname;

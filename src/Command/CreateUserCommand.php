@@ -40,6 +40,7 @@ class CreateUserCommand extends Command
     {
         $this
             ->addArgument('email', InputArgument::REQUIRED, 'The email of the user.')
+            ->addArgument('emailPro', InputArgument::REQUIRED, 'The email pro of the user.')
             ->addArgument('username', InputArgument::REQUIRED, 'The username of the user.')
             ->addArgument('password', InputArgument::REQUIRED, 'The plain password of the user.')
             ->addArgument('lastname', InputArgument::REQUIRED, 'The lastname of the user.')
@@ -67,6 +68,7 @@ class CreateUserCommand extends Command
 
         // Configuration des propriétés de l'utilisateur à partir des arguments
         $user->setEmail($input->getArgument('email'));
+        $user->setEmailPro($input->getArgument('emailPro'));
         $user->setUsername($input->getArgument('username'));
         $user->setLastname($input->getArgument('lastname'));
         $user->setFirstname($input->getArgument('firstname'));

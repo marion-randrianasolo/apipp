@@ -5,6 +5,7 @@ namespace App\DTO;
 class EditUserRequest
 {
     public ?string $email = null;
+    public ?string $emailPro = null;
     public ?string $username = null;
     public ?string $firstname = null;
     public ?string $lastname = null;
